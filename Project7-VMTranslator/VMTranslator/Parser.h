@@ -1,0 +1,167 @@
+#pragma once
+#include <vector>
+using namespace std;
+
+enum eCommandType
+{
+	C_ARITHMETIC, C_PUSH, C_POP, C_LABEL,
+	C_GOTO, C_IF, C_FUNCTION, C_RETURN, C_CALL
+};
+
+class Parser
+{
+private:
+
+	ifstream Source;
+	string nextCommand;
+	string currentCommand;
+	bool hasNext;
+	vector<string> container = { "", "", "" };
+	eCommandType currentType;
+
+	static string cleanLine(string line) {
+
+		short pos = line.find("//"); //find comment position
+		if (pos != string::npos)
+		{
+			line.erase(pos);
+		}
+
+		//line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end()); //remove white space
+
+		return line;
+	}
+
+	void determineCommandType() {
+
+		if (container[0] == "push") {
+			currentType = eCommandType::C_PUSH;
+			return;
+		}
+
+		if (container[0] == "pop") {
+			currentType = eCommandType::C_POP;
+			return;
+		}
+
+		if (container[0] == "add" ||
+			container[0] == "sub" ||
+			container[0] == "neg" ||
+			container[0] == "and" ||
+			container[0] == "or"  ||
+			container[0] == "not" ||
+			container[0] == "eq"  ||
+			container[0] == "gt"  ||
+			container[0] == "lt")
+		{
+			currentType = eCommandType::C_ARITHMETIC;
+			return;
+		}
+
+		throw invalid_argument("Unknown command type: " + container[0]);
+	}
+
+	void lookNext() {
+		string rawline, cleaned;
+
+		hasNext = false;
+
+		while (getline(Source, rawline))
+		{
+			cleaned = cleanLine(rawline);
+			if (!cleaned.empty())
+			{
+				nextCommand = cleaned;
+				hasNext = true;
+				break; // Found one! Stop looking.
+			}
+		}
+	}
+
+public:
+
+	Parser(string filename) : hasNext(false)
+	{
+		Source.open(filename);
+
+		if (!Source.is_open()) {
+			throw runtime_error("Error: Could not open file " + filename);
+		}
+
+		lookNext();
+	}
+
+	bool hasMoreCommand() {
+		return hasNext;
+	}
+
+	void advance() {
+		
+		currentCommand = nextCommand;
+
+		// Clear the container from the previous command
+		container[0] = "";
+		container[1] = "";
+		container[2] = "";
+
+		char delim = ' ';
+		int pos = currentCommand.find(delim);
+
+		if (pos == string::npos) //if command add, neg, eq etc
+		{
+			container[0] = currentCommand;
+			lookNext();             // Find the next line
+			determineCommandType(); // Set the type to C_ARITHMETIC
+			return;                 // Now it's safe to exit!
+		}
+		else
+		{
+			container[0] = currentCommand.substr(0, pos);
+			currentCommand.erase(0, pos + 1);
+		}
+
+		pos = currentCommand.find(delim);
+		if (pos != string::npos)
+		{
+			container[1] = currentCommand.substr(0, pos);
+			currentCommand.erase(0, pos + 1);
+		}
+
+		if (!currentCommand.empty())
+		{
+			container[2] = currentCommand;
+		}
+
+		lookNext();
+		determineCommandType();
+	}
+
+	eCommandType commandType() {
+		return currentType;
+	}
+
+	string arg1() {
+		if (currentType == eCommandType::C_ARITHMETIC) {
+			return container[0];
+		}
+		return container[1];
+
+	}
+
+	int arg2() {
+		
+		if (currentType == eCommandType::C_PUSH || currentType == eCommandType::C_POP) {
+			return stoi(container[2]);
+		}
+		return 0;
+	}
+
+	void print() {
+		string line;
+		while (getline(Source, line))
+		{
+			cout << cleanLine(line) << endl;
+		}
+	}
+
+};
