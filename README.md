@@ -15,6 +15,7 @@ This repository contains my project submissions for the [Nand2Tetris](https://ww
 | [Project 5](./Project5/) | Computer Architecture | CPU, Memory, and full Hack Computer chip |
 | [Project 6](./Project6-HackAssembler/) | Assembler | A Hack Assembler that translates assembly language into binary machine code |
 | [Project 7](./Project7-VMTranslator/) | VM Translator I | A VM Translator that converts stack-based VM commands into Hack assembly (arithmetic, memory access) |
+| [Project 8](./Project8-VMTranslator/) | VM Translator II | Extended the VM Translator with program flow, function calling, and the ability to translate a full folder of `.vm` files into one program |
 
 ---
 
@@ -28,7 +29,8 @@ NAND gate
                             └── Machine Language (Project 4)
                                     └── CPU & Computer (Project 5)
                                                 └── Hack Assembler (Project 6)
-                                                        └── VM Translator (Project 7) ✅
+                                                        └── VM Translator I (Project 7)
+                                                                └── VM Translator II (Project 8) ✅
 ```
 
 ---
@@ -36,11 +38,11 @@ NAND gate
 ## 🛠️ Tools & Languages
 
 - **Projects 1–5:** Hardware Description Language (HDL) — simulated in the Nand2Tetris Hardware Simulator
-- **Projects 6–7:** C++ (Visual Studio, Windows x64)
+- **Projects 6–8:** C++ (Visual Studio, Windows x64)
 
 ---
 
 ## 📌 Notes
 
 - Projects 1–5 use `.hdl` files runnable in the [Nand2Tetris Hardware Simulator](https://www.nand2tetris.org/software)
-- Project 6 (Hack Assembler) and Project 7 (VM Translator) are standalone C++ Visual Studio projects — see their own READMEs for build and usage instructions
+- Project 6 (Hack Assembler), Project 7, and Project 8 (VM Translator) are standalone C++ Visual Studio projects — see their own READMEs for build and usage instructions
