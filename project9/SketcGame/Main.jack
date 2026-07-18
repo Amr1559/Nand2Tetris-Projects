@@ -1,0 +1,12 @@
+/** Initializes and runs the Etch-A-Sketch application. */
+class Main {
+    function void main() {
+        var SketchGame game;
+        
+        let game = SketchGame.new();
+        do game.run();
+        do game.dispose();
+        
+        return;
+    }
+}

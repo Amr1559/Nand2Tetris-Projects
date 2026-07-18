@@ -1,0 +1,65 @@
+
+/** Hello World program. */
+class Counter {
+
+    field int x;
+
+    constructor Counter new() {
+        let x = 0;
+        return this;
+    }
+
+    method void inc() {
+        let x = x + 1;
+        return;
+    }
+
+    method void dec() {
+        let x = x - 1;
+        return;
+    }
+
+    method void run() {
+        var char key;  // the key currently pressed by the user
+        var boolean exit;
+        let exit = false;
+
+        // Print the starting count before the loop begins
+        do Output.moveCursor(0, 0);
+        do Output.printString("Current Count: ");
+        do Output.printInt(x);
+
+        while(~exit) {
+
+        // 1. Wait for the user to press a key
+        while (key = 0) {
+            let key = Keyboard.keyPressed();
+            }
+
+        // 2. Process the key press exactly once
+        if (key = 131) { do inc(); }         // Up arrow
+        if (key = 133) { do dec(); }         // Down arrow
+        if (key = 81)  { let exit = true; }  // Q key
+
+        // 3. Update the screen (overwrite the old number)
+        do Output.moveCursor(0, 0);
+        do Output.printString("Current Count: ");
+        do Output.printInt(x);
+        do Output.printString("   "); // Blank spaces to erase leftover digits (e.g., going from 10 to 9)
+
+
+        // 4. Wait for the user to RELEASE the key before continuing!
+        while(~(key = 0)) {
+        let key = Keyboard.keyPressed();
+        }
+
+        }
+
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

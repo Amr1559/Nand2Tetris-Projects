@@ -1,0 +1,12 @@
+class Main {
+
+   function void main() {
+
+   var Counter myConunter;
+   let myConunter = Counter.new();
+   do myConunter.run();
+   do myConunter.dispose();
+
+   return;
+   }
+}

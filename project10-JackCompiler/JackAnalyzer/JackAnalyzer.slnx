@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="JackAnalyzer.vcxproj" Id="52ed9aec-bb34-426c-9523-8007fa26c485" />
+</Solution>

@@ -1,0 +1,115 @@
+/**
+ * Implements an Etch-A-Sketch drawing tool.
+ * The user controls a cursor using the arrow keys to draw on the screen.
+ * Press 'C' to clear the screen, and 'Q' to quit.
+ */
+class SketchGame {
+    field int x, y; // coordinates of the drawing cursor
+    field int size; // The size of the cursor (thickness of the line)
+
+    /** Constructs a new SketchGame and places the cursor in the center. */
+    constructor SketchGame new() {
+        let x = 256; // Center of the 512-pixel wide screen
+        let y = 128; // Center of the 256-pixel high screen
+        let size = 2; // Draws a 2x2 pixel square
+
+        return this;
+    }
+
+    //Draws a black pixel block at the current (x,y) location
+    method void draw() {
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    //draw header
+    method void drawHeader() {
+        do Output.moveCursor(0, 0);
+        do Output.printString("Move: Arrow keys, Clear: C, Exit: Q");
+        return;
+    }
+
+    //Clear screen redraws cursor and header
+    method void clear() {
+        let x = 256;
+        let y = 128;
+
+        do Screen.clearScreen();
+        do draw();
+        do drawHeader();
+        return;
+    }
+
+    
+    method void moveUP() {
+
+        if (y > 1) {
+            let y = y - 2;
+            do draw();
+        }
+
+        return;
+    }
+
+    method void moveDown() {
+
+        if ((y + size) < 256) {
+            let y = y + 2;
+            do draw();
+        }
+
+        return;
+    }
+
+    method void moveLeft() {
+        if (x > 1) {
+            let x = x - 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveRight() {
+        if ((x + size) < 512) {
+            let x = x + 2;
+            do draw();
+        }
+        return;
+    }
+
+
+    // game loop
+    method void run() {
+        var char key;
+        var boolean exit;
+
+        let exit = false;
+
+        // Draw square and header before moving
+        do draw();
+        do drawHeader();
+
+        while(~exit)
+        {
+            let key = Keyboard.keyPressed();
+
+            if (key = 130) { do moveLeft(); }   // Left arrow
+            if (key = 131) { do moveUP(); }     // Up arrow
+            if (key = 132) { do moveRight(); }  // Right arrow
+            if (key = 133) { do moveDown(); }   // Down arrow
+            if (key = 67) { do clear(); }       // 'C' key to clear
+            if (key = 81) { let exit = true; }  // 'Q' key to quit
+            
+
+            // Crucial: Wait a tiny bit so the line draws smoothly 
+            do Sys.wait(10);
+        }
+        return;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
